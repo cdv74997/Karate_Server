@@ -1,6 +1,7 @@
 const express = require("express");
 const dbOperation = require("./dbFiles/dbOperation");
 const cors = require("cors");
+// for smtp
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const API_PORT = process.env.PORT || 5000;
