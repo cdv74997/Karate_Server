@@ -1,29 +1,9 @@
-require('dotenv').config()
-// const { Client } = require("pg");
-// const dbConnect =
-//
-// const config = new Client({
-//   connectionString: dbConnect,
-//   ssl: {
-//     rejectUnauthorized: false,
-//   },
-// });
+require('dotenv').config(); // Load environment variables from .env file
 
-// config.connect((err) => {
-//   if (err) {
-//     console.error("connection error", err.stack);
-//   } else {
-//     console.log("connected to database");
-//   }
-// });
-
-// module.exports = config;
-
-const { Pool } = require("pg");
-console.log(process.env.DB_CONNECT);
+const { Pool } = require("pg"); // Importing the Pool object from the pg module
 
 const pool = new Pool({
-  connectionString: process.env.DB_CONNECT,
+  connectionString: process.env.DB_CONNECT, // Setting the connection string for the PostgreSQL database
 });
 
-module.exports = pool;
+module.exports = pool; // Exporting the pool object for use in other modules

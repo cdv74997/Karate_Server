@@ -1,28 +1,27 @@
-const express = require("express");
-const dbOperation = require("./dbFiles/dbOperation");
-const cors = require("cors");
-// for smtp
-const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
-const API_PORT = process.env.PORT || 5000;
-const app = express();
-const corsOptions = {
-    origin: "*",
-  };
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
+const express = require("express"); // Importing the express module
+const dbOperation = require("./dbFiles/dbOperation"); // Importing the custom module dbOperation
+const cors = require("cors"); // Importing the cors module
+const nodemailer = require('nodemailer'); // Importing the nodemailer module
+const bodyParser = require('body-parser'); // Importing the body-parser module
+
+const API_PORT = process.env.PORT || 5000; // Setting the API port
+
+const app = express(); // Creating an instance of the express application
+
+app.use(cors()); // Enabling Cross-Origin Resource Sharing
+app.use(bodyParser.json()); // Parsing JSON request bodies
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
   auth: {
-    user: process.env.SMTP_HOST,
-    pass: process.env.SMTP_PASSWORD,
+    user: process.env.SMTP_HOST, // SMTP host
+    pass: process.env.SMTP_PASSWORD, // SMTP password
   },
-  
 });
 
+// Endpoint to send an email this is used to confirm the appointment
 app.post('/send-email', async (req, res) => {
   try {
     const { from, to, subject, body } = req.body;
@@ -44,6 +43,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
+// Endpoint to fetch data for our courses from the database
 app.get("/api/data/", async (req, res) => {
   try {
     const data = await dbOperation.fetchCourses(req.query.day);
@@ -53,28 +53,4 @@ app.get("/api/data/", async (req, res) => {
   }
 });
 
-
-
-
-
-//
-//app.get("/api", function(req, res) {
-//    console.log('Called');
-//    res.send({result: "Hello"})
-//})
-//
-//app.get("/quit", function(req, res) {
-//    console.log('Called quit');
-//    res.send({result: "Good Bye"})
-//})
-
-// try {
-//   console.log("hello");
-//   dbOperation.fetchCourses(5).then((res) => {
-//     console.log(res);
-//   });
-// } catch (error) {
-//   console.error(error);
-// }
-
-app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
+app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`)); // Starting the server and listening on the specified port
